@@ -1,7 +1,14 @@
-from django.http import HttpResponse
-from django.views import View
+from core.models import Test
+from core.serializers import TestSerializer
+from rest_framework import generics
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-class MyView(View):
-    def get(self, request):
-        # <view logic>
-        return HttpResponse('result')
+class MyView(generics.ListCreateAPIView):
+    queryset = Test.objects.all()
+    serializer_class = TestSerializer
+    authentication_classes = []
+    permission_classes = []
+    # authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
+    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    http_method_names = ['get','post','patch']
